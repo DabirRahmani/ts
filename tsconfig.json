@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "noEmitOnError": true,
+    "target": "es2020",
+    "strict": true, //  یه تعداد استریکت داریم که این همه رو فعال میکنه
+    "noImplicitAny": false, //این مثلا برای انی هست
+    "strictNullChecks": true // این مثلا نال و اندیفایند رو دیگه نمیشه بریزیم توی چیزای دیگه و باید تایپ چک بشه حتما
+  },
+  "exclude": ["node_modules"]
+}
