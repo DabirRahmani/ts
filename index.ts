@@ -1,58 +1,47 @@
-//https://www.typescriptlang.org/docs/handbook/2/basic-types.html
+// https://www.typescriptlang.org/docs/handbook/2/everyday-types.html
 
-function greet(person: string, date: Date) {
-  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
-}
+// function liveDangerously(x?: number | null) {
+//   // No error
+//   console.log(x!.toFixed());
+// }//اینجا دیگه نال یا اندیفایند بودن چک نمیشه
 
-greet("Maddison", new Date());
+// declare function handleRequest(url: string, method: "GET" | "POST"): void;
 
-// tsc --noEmitOnError  index.ts && node index.js
-// using this flag for tsc wont allow tsc to create js file on error
+// const req = { url: "https://example.com", method: "GET" };
+// handleRequest(req.url, req.method);
 
-// function greet(person, date) {
-//   console.log(`Hello ${person}, today is ${date}!`);
+// const req = { url: "https://example.com", method: "GET" as "GET" };
+// handleRequest(req.url, req.method);
+
+// اینجا میشه این رو هم به کار برد
+// as const
+// اینطوری کل یک ابجنکت به صورت تایپ لیترال میشه
+// const req = { url: "https://example.com", method: "GET" as const };
+// handleRequest(req.url, req.method);
+
+// const x = "hello" as number;
+// const x = "hello" as any as  number;
+// const x = "hello" as unknown as  number;
+
+// function printName(obj: { first: string; last?: string }) {
+//   console.log(obj.last.toUpperCase());
+//   if (!!obj.last) {
+//     console.log(obj.last.toUpperCase());
+//   }
+
+//   console.log(obj.last?.toUpperCase());
 // }
 
-// greet("Brendan");
+// Number.MAX_SAFE_INTEGER;
+// Number.parseInt;
+// Number.NEGATIVE_INFINITY;
 
-// import express from "express";
-// const app = express();
+// Number().toFixed();
 
-// app.get("/", function (req, res) {
-//   res.sen
-// });
+// String().length;
 
-// app.listen(3000);
+// Boolean();
 
-// const value = Math.random() < 0.5 ? "a" : "b";
-// if (value !== "a") {
-//   // ...
-// } else if (value === "b") {
-//   // Oops, unreachable
-// }
-
-// function flipCoin() {
-//   // Meant to be Math.random()
-//   return Math.random < 0.5;
-// }
-
-// const announcement = "Hello World!";
-
-// // How quickly can you spot the typos?
-// announcement.toLocaleLowercase();
-// announcement.toLocalLowerCase();
-
-// // We probably meant to write this...
-// announcement.toLocaleLowerCase();
-
-// const user = {
-//   name: "Daniel",
-//   age: 26,
-// };
-// user.location; // returns undefined
-
-// const message = "Hello World!";
-
-// message.toLowerCase();
-// // Calling 'message'
-// message();
+// let obj: any = { x: 0 };
+// // Using `any` disables all further type checking, and it is assumed
+// obj.foo(); // همینجا انی میرینه. تایپ اسکریپت رانتایم نیست نمیتونه اینو بفهمه

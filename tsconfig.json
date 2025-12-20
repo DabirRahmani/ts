@@ -3,8 +3,11 @@
     "noEmitOnError": true,
     "target": "es2020",
     "strict": true, //  یه تعداد استریکت داریم که این همه رو فعال میکنه
-    "noImplicitAny": false, //این مثلا برای انی هست
-    "strictNullChecks": true // این مثلا نال و اندیفایند رو دیگه نمیشه بریزیم توی چیزای دیگه و باید تایپ چک بشه حتما
+    "noImplicitAny": true, //این مثلا برای انی هست
+    "strictNullChecks": true, // این مثلا نال و اندیفایند رو دیگه نمیشه بریزیم توی چیزای دیگه و باید تایپ چک بشه حتما
+    "moduleResolution": "node16",
+    "module": "node16"
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["./*"]
 }
