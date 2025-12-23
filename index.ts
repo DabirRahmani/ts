@@ -1,47 +1,161 @@
-// https://www.typescriptlang.org/docs/handbook/2/everyday-types.html
+// narrowing with types in ts
 
-// function liveDangerously(x?: number | null) {
-//   // No error
-//   console.log(x!.toFixed());
-// }//اینجا دیگه نال یا اندیفایند بودن چک نمیشه
-
-// declare function handleRequest(url: string, method: "GET" | "POST"): void;
-
-// const req = { url: "https://example.com", method: "GET" };
-// handleRequest(req.url, req.method);
-
-// const req = { url: "https://example.com", method: "GET" as "GET" };
-// handleRequest(req.url, req.method);
-
-// اینجا میشه این رو هم به کار برد
-// as const
-// اینطوری کل یک ابجنکت به صورت تایپ لیترال میشه
-// const req = { url: "https://example.com", method: "GET" as const };
-// handleRequest(req.url, req.method);
-
-// const x = "hello" as number;
-// const x = "hello" as any as  number;
-// const x = "hello" as unknown as  number;
-
-// function printName(obj: { first: string; last?: string }) {
-//   console.log(obj.last.toUpperCase());
-//   if (!!obj.last) {
-//     console.log(obj.last.toUpperCase());
+// interface Triangle {
+//   kind: "triangle";
+//   sideLength: number;
+// }
+// interface Circle {
+//   kind: "circle";
+//   radius: number;
+// }
+// interface Square {
+//   kind: "square";
+//   sideLength: number;
+// }
+// type Shape = Circle | Square | Triangle;
+// function getArea(shape: Shape) {
+//   switch (shape.kind) {
+//     case "circle":
+//       return Math.PI * shape.radius ** 2;
+//     case "square":
+//       return shape.sideLength ** 2;
+//     default:
+//       return shape as never;
+//     // میگه بست پرکتیس اینه که اینجا وقتی همه حالت ها رو چک کردیم
+//     // و حالت دیگه ای برای هدفی که داشتیم نداریم. حالا تایپ هایی که باقی مونده رو به عنوان نور برگردونیم
 //   }
-
-//   console.log(obj.last?.toUpperCase());
 // }
 
-// Number.MAX_SAFE_INTEGER;
-// Number.parseInt;
-// Number.NEGATIVE_INFINITY;
+// type Fish = { swim: () => void };
+// type Bird = { fly: () => void };
+// function isFish(pet: Fish | Bird): pet is Fish {
+//   // return type is "type predicate"
+//   // با این میشه خیلی خوب نرو کرد
+//   // خروجیش به کنترل فلو میفهمونه که تایپ فلان ابجکت چیه
+//   return (pet as Fish).swim !== undefined;
+// }
+// function move(pet: Fish | Bird) {
+//   if (isFish(pet)) {
+//     pet.swim();
+//   } else {
+//     pet.fly();
+//   }
+// }
+// function filterPetsToFish(pets: (Fish | Bird)[]) {
+//   const fish = pets.filter(isFish);
+//   return fish;
+// }
 
-// Number().toFixed();
+// اساین کردن در حالتی که یه مقدار چند تایپ داشته باشه به ازای همه اون  تایپ ها میشه اساین کرد بهش
+// let x = 1;
+// x = "salam";
 
-// String().length;
+// let x: string | number = 1;
+// x = "salam"
 
-// Boolean();
+// if (x instanceof Date) // این هم یکی دیگه از حالت های نروینگ هست
 
-// let obj: any = { x: 0 };
-// // Using `any` disables all further type checking, and it is assumed
-// obj.foo(); // همینجا انی میرینه. تایپ اسکریپت رانتایم نیست نمیتونه اینو بفهمه
+// type Fish = { swim: () => void };
+// type Bird = { fly: () => void };
+// type Human = { swim?: () => void; fly?: () => void };
+
+// function move(animal: Fish | Bird | Human) {
+//   if ("swim" in animal) {
+//     // narrowing with "in"
+//     animal;
+//   } else {
+//     animal;
+//   }
+// }
+
+// interface Container {
+//   value: number | null | undefined;
+// }
+
+// function multiplyValue(container: Container, factor: number) {
+//   // Remove both 'null' and 'undefined' from the type.
+//   // اینجا هم باید حواسمون باشه
+//   // خیلی وقتا == و != باعث میشن که اشتباه برنچ کنیم کد رو
+//   if (container.value != null) {
+//     console.log(container.value);
+//     // Now we can safely multiply 'container.value'.
+//     container.value *= factor;
+//   }
+// }
+
+// function example(x: string | number, y: string | boolean) {
+//   if (x === y) {
+//     // تنها حالتی که میتونن === باشن اینه استرینگ باشن
+//     // اینطوری هم میشه نرو کرد تایپ رو
+//     x.toUpperCase();
+//     y.toLowerCase();
+//   } else {
+//     console.log(x);
+//     console.log(y);
+//   }
+// }
+
+// function multiplyAll(
+//   values: number[] | undefined,
+//   factor: number
+// ): number[] | undefined {
+//   if (!values) {
+//     return values;
+//   } else {
+//     return values.map((x) => x * factor);
+//   }
+// }
+
+// // ****** مثال مهم ////////////
+// function printAll(strs: string | string[] | null) {
+//   // !!!!!!!!!!!!!!!!
+//   //  DON'T DO THIS!
+//   //   KEEP READING
+//   // !!!!!!!!!!!!!!!!
+//   if (strs) {
+//     if (typeof strs === "object") {
+//       for (const s of strs) {
+//         console.log(s);
+//       }
+//     } else if (typeof strs === "string") {
+//       console.log(strs); // اینجا میاد میگه در این صورت ما اگر استرینگ خالی داشته باشیم دیگه نمیفهمیم
+//       // میگه تروثی بودن رو باید قبل هر شرط خاص بذاریم
+//       // چک کردن تروثی بودن نباید باعث بشه ما تایپ هامون رو به دو تیکه تقسیم کنیم
+//       // اگر استرینگ هست باید مطمئن باشیم که حتما میاد توی این ایف
+//     }
+//   }
+// }
+
+// function printAll(strs: string | string[] | null) {
+//   if (strs && typeof strs === "object") {
+//     // we call it checking if strs is TRUTHY or FALSY
+//     for (const s of strs) {
+//       console.log(s);
+//     }
+//   } else if (typeof strs === "string") {
+//     console.log(strs);
+//   }
+// }
+
+// const t = "salam";
+// console.log(typeof Boolean(t));
+// console.log(typeof !!t);
+// console.log(typeof !"ds");
+
+// function printAll(strs: string | string[] | null) {
+//   if (typeof strs === "object") {
+//     for (const s of strs) {
+//       // نال هم یه نوع ابجکت هست
+//       console.log(s);
+//     }
+//   } else if (typeof strs === "string") {
+//     console.log(strs);
+//   } else {
+//     // do nothing
+//   }
+// }
+
+// function padLeft(padding: number | string, input: string): string {
+//   if (typeof padding === "number") return " ".repeat(padding) + input;
+//   else return padding + input;
+// }
